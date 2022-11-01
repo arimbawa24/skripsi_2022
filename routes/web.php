@@ -31,5 +31,6 @@ Route::get('/', function () {
 Route::GET('/insert', [AuthController::class,'registrasi']); 
 Route::GET('/getProfile', [AuthController::class,'getProfile']); 
 Route::GET('/login', [AuthController::class,'login']); 
+Route::GET('/update', [AuthController::class,'updateProfile']); 
 Route::GET('/insertMakanan', [MakananController::class,'insertMakanan']); 
 Route::GET('/getMakanan', [MakananController::class,'GetMakanan']); 
