@@ -46,7 +46,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|max:16',
             'phone' => 'required|numeric|digits_between:11,13',
             'image' => 'required|mimes:jpg,png|max:1024|min:10'
-            
+            //
             
             
         ]);
