@@ -156,4 +156,46 @@ class TransaksiController extends Controller
         ],200);
 
     }
+    
+public function tukarPoint(Request $request)
+{
+    
+    try {
+        if(empty($request->bearerToken())){
+            return "Beare token harus ada";
+        }
+        $verifiedIdToken = $this->auth->verifyIdToken($request->bearerToken());
+        $uid = $verifiedIdToken->claims()->get('sub');
+
+        $database = $this->firestore->database();
+        $collectionReference = $database->collection('Members');
+        $documentReference = $collectionReference->document($uid);
+        $snapshot = $documentReference->snapshot();
+        $point = $snapshot['Point'];
+
+        if ($point < 1000) {
+            return response()->json([
+                'status' => 'failed', 
+                'message'=>'minimal point 1000 untuk melakukan penukaran',
+                'data' =>$transaksi
+            ],400);
+           
+        } else { 
+
+            $database = $this->firestore->database();
+             $collectionReference = $database->collection('Members');
+            $documentReference = $collectionReference->document($uid)->update([
+            ['path' => 'Point', 'value' => $point - $request->get('point')],
+             ]); 
+        }
+
+        return $point;
+
+
+
+    } catch (FailedToVerifyToken $e) {
+        return 'The token is invalid: '.$e->getMessage();
+    }
+}
+
 }

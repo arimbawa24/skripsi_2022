@@ -77,7 +77,7 @@ Route::prefix('transaksi')->group(function () {
     Route::GET('/kodeBayar/get', [TransaksiController::class,'GetKodeTransaksi']);
     Route::GET('/get/history', [TransaksiController::class,'GetHistoryTransaksi']);
     Route::POST('/bayar', [TransaksiController::class,'bayar']);
-
+    Route::GET('/point/tukar', [TransaksiController::class,'tukarPoint']);
 });
 
 Route::prefix('notification')->group(function () {

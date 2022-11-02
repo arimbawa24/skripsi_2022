@@ -78,10 +78,7 @@ public function birthday(Type $var = null)
   return $databirhtday;
 }
 
-protected function schedule(Schedule $schedule)
-{
 
-}
 
 }
 
