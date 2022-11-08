@@ -41,7 +41,7 @@ class AuthController extends Controller
         // dd($request);
         $validator = Validator::make($request->all(), [
             'firstname' =>'required|string|min:3|max:8',
-            'lastname' => 'required|string|min:5|max:15',
+            'lastname' => 'required|string|min:4|max:15',
             'email' => 'required|string|email',
             'password' => 'required|string|min:8|max:16',
             'phone' => 'required|numeric|digits_between:11,13',
@@ -305,12 +305,12 @@ class AuthController extends Controller
                 $database = $this->firestore->database();
                 $collectionReference = $database->collection('Members');
                 $documentReference = $collectionReference->document($uid)->update([
-                    ['path' => 'password', 'value' =>  $password1],
+                    ['path' => 'password', 'value' =>   bcrypt($password1)],
                 
                 ]); 
     
                  return response()->json([
-                      'status' => 'succes', 
+                      'status' => 'success', 
                       'message'=> 'update password berhasil',
                     ],200);
                 
