@@ -39,7 +39,7 @@ class LocationController extends Controller
              if ($tmpValue[$key]['nama_lokasi'] == $request->get('nama_lokasi')) {
                 return response()->json([
                     'status' => 'false', 
-                    'message'=> 'produk yang diinputkan sudah ada'   
+                    'message'=> 'lokasi yang diinputkan sudah ada'   
                 ],400);
                 
             }
@@ -78,7 +78,7 @@ class LocationController extends Controller
     
     
                         return response()->json([
-                            'status' => 'succes', 
+                            'status' => 'success', 
                             'message'=>'insert Location berhasil'   
                         ],200);
         }
@@ -97,7 +97,7 @@ class LocationController extends Controller
         }
 
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get location berhasil',
             'data'=> $value  
         ],200);
@@ -108,7 +108,7 @@ class LocationController extends Controller
         $this->dbLocation = $this->database->getReference('MELCOSH/Location/'.$request->get('id_lokasi'));
         $value = $this->dbLocation->getSnapshot()->getvalue();
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get detail location berhasil',
             'data'=> $value  
         ],200);

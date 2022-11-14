@@ -62,31 +62,31 @@ class KeranjangController extends Controller
                                 if (isset(  $tmpValue)){
                                     foreach (array_keys($tmpValue) as $key) {            
                                         if($tmpValue[$key]['nama_produk'] == $valuewb['nama_wb']){
-                                            if ($tmpValue[$key]['jumlah_stok']=='0') {
+                                            if ($valuewb[$key]['jumlah_stok']=='0') {
                                                 $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
                             
                                                     'flag_stok' => 'N'
                                                     
                                                 ]);
                                                 return response()->json([
-                                                    'status' => 'succes', 
+                                                    'status' => 'failed', 
                                                     'message'=> 'maaf stok sudah habis'   
-                                                ],200);
+                                                ],400);
                                             }
                                             $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid.'/'.$key)->UPDATE([
                                             
                                                 'nama_produk' => $valuewb['nama_wb'],
                                                 'harga' => $valuewb['harga'],
-                                                    'jumlah' => $tmpValue[$key]['jumlah']+1
+                                                'jumlah' => $tmpValue[$key]['jumlah']+1
                                                 
                                             ]);
                                             $db = $this->database->getReference('MELCOSH/WholWHOLEBEAN/'.$id_produk)->UPDATE([
                             
-                                                'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                                                'Jumlah_stok' => $valuewb['Jumlah_stok']-1
                                                 
                                             ]);
                                             return response()->json([
-                                                'status' => 'succes', 
+                                                'status' => 'success', 
                                                 'message'=>'insert keranjang berhasil'   
                                             ],200);
                                        
@@ -104,11 +104,11 @@ class KeranjangController extends Controller
                                 ]);
                                 $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
                             
-                                    'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                                    'Jumlah_stok' => $valuewb['Jumlah_stok']-1
                                     
                                 ]);
                                 return response()->json([
-                                    'status' => 'succes', 
+                                    'status' => 'success', 
                                     'message'=>' insert keranjang berhasil'   
                                 ],200);
 
@@ -119,31 +119,31 @@ class KeranjangController extends Controller
                             if (isset(  $tmpValue)){
                                 foreach (array_keys($tmpValue) as $key) {            
                                     if($tmpValue[$key]['nama_produk'] == $valueMecrh['nama_merch']){
-                                        if ($tmpValue[$key]['jumlah_stok']=='0') {
+                                        if ($valueMecrh[$key]['Jumlah_stok']=='0') {
                                             $db = $this->database->getReference('MELCOSH/MERCHANDISE/'.$id_produk)->UPDATE([
                             
                                                 'flag_stok' => 'N'
                                                 
                                             ]);
                                             return response()->json([
-                                                'status' => 'succes', 
+                                                'status' => 'failed', 
                                                 'message'=> 'maaf stok sudah habis'   
-                                            ],200);
+                                            ],400);
                                         }
                                         $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid.'/'.$key)->UPDATE([
                                         
                                             'nama_produk' => $valueMecrh['nama_merch'],
                                             'harga' => $valueMecrh['harga'],
-                                                'jumlah' => $tmpValue[$key]['jumlah']+1
+                                            'jumlah' => $tmpValue[$key]['jumlah']+1
                                             
                                         ]);
                                         $db = $this->database->getReference('MELCOSH/MERCHANDISE/'.$id_produk)->UPDATE([
                             
-                                            'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                                            'Jumlah_stok' => $valueMecrh['Jumlah_stok']-1
                                             
                                         ]);
                                         return response()->json([
-                                            'status' => 'succes', 
+                                            'status' => 'success', 
                                             'message'=>' insert keranjang berhasil'   
                                         ],200);
                                     }
@@ -160,11 +160,11 @@ class KeranjangController extends Controller
                             ]);
                             $db = $this->database->getReference('MELCOSH/MERCHANDISE/'.$id_produk)->UPDATE([
                             
-                                'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                                'Jumlah_stok' => $valueMecrh['Jumlah_stok']-1
                                 
                             ]);
                             return response()->json([
-                                'status' => 'succes', 
+                                'status' => 'success', 
                                 'message'=>' insert keranjang berhasil'   
                             ],200);
                         }
@@ -176,16 +176,16 @@ class KeranjangController extends Controller
                     if (isset(  $tmpValue)){
                         foreach (array_keys($tmpValue) as $key) {            
                             if($tmpValue[$key]['nama_produk'] == $valueMinuman['nama_minuman']){
-                                if ($tmpValue[$key]['jumlah_stok']=='0') {
+                                if ($valueMinuman[$key]['Jumlah_stok']=='0') {
                                     $db = $this->database->getReference('MELCOSH/MINUMAN/'.$id_produk)->UPDATE([
                             
                                         'flag_stok' => 'N'
                                         
                                     ]);
                                     return response()->json([
-                                        'status' => 'succes', 
+                                        'status' => 'failed', 
                                         'message'=> 'maaf stok sudah habis'   
-                                    ],200);
+                                    ],400);
                                 }
                                 $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid.'/'.$key)->UPDATE([
                                 
@@ -196,11 +196,11 @@ class KeranjangController extends Controller
                                 ]);
                                 $db = $this->database->getReference('MELCOSH/MINUMAN/'.$id_produk)->UPDATE([
                             
-                                    'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                                    'jumlah_stok' => $valueMinuman['Jumlah_stok']-1
                                     
                                 ]);
                                 return response()->json([
-                                    'status' => 'succes', 
+                                    'status' => 'success', 
                                     'message'=>' insert keranjang berhasil'   
                                 ],200);
                             }
@@ -217,11 +217,11 @@ class KeranjangController extends Controller
                     ]);
                     $db = $this->database->getReference('MELCOSH/MINUMAN/'.$id_produk)->UPDATE([
                             
-                        'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                        'Jumlah_stok' => $valueMinuman['Jumlah_stok']-1
                         
                     ]);
                     return response()->json([
-                       'status' => 'succes', 
+                       'status' => 'success', 
                        'message'=>' insert keranjang berhasil'   
                    ],200);
                 }                
@@ -242,9 +242,9 @@ class KeranjangController extends Controller
                                     
                                 ]);
                                 return response()->json([
-                                    'status' => 'succes', 
+                                    'status' => 'failed', 
                                     'message'=> 'maaf stok sudah habis'   
-                                ],200);
+                                ],400);
                             }
                             $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid.'/'.$key)->UPDATE([
                             
@@ -261,7 +261,7 @@ class KeranjangController extends Controller
                             ]);
                             
                             return response()->json([
-                                'status' => 'succes', 
+                                'status' => 'success', 
                                 'message'=>' insert keranjang berhasil'   
                             ],200);
                         }
@@ -278,11 +278,11 @@ class KeranjangController extends Controller
             ]);
             $db = $this->database->getReference('MELCOSH/MAKANAN/'.$id_produk)->UPDATE([
                             
-                'jumlah_stok' => $valuemakanan['Jumlah_stok']-1
+                'Jumlah_stok' => $valuemakanan['Jumlah_stok']-1
                 
             ]);
             return response()->json([
-                'status' => 'succes', 
+                'status' => 'success', 
                 'message'=>'insert keranjang berhasil'   
             ],200);
         }   
@@ -312,13 +312,13 @@ class KeranjangController extends Controller
                   
               }
               return response()->json([
-                  'status' => 'succes', 
+                  'status' => 'success', 
                   'message'=>'get keranjang berhasil',
                   'data' =>  $value  
               ],200);
         } else{
             return response()->json([
-                'status' => 'succes', 
+                'status' => 'failed', 
                 'message'=>'Belum Menambahkan produk kedalam keranjang', 
             ],200);
         }
@@ -345,7 +345,7 @@ class KeranjangController extends Controller
         $produk = array();
 
         foreach ($request->produk as $produk_key) {
-            # code...
+            
             foreach (array_keys($tmpValue) as $key) {
                 # code...
                 if($key == $produk_key){
@@ -353,6 +353,8 @@ class KeranjangController extends Controller
                         'nama_produk' => $tmpValue[$key]['nama_produk'],
                         'harga' => $tmpValue[$key]['harga'],
                         'jumlah' => $tmpValue[$key]['jumlah'],
+                        'id_produk' =>$key
+
                     ];
                     array_push($produk,$tmpProduk);
                     $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid.'/'.$key)->REMOVE();
@@ -373,7 +375,7 @@ class KeranjangController extends Controller
         ]);
 
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'checkout berhasil'   
             ],200);
         } catch  (FailedToVerifyToken $e) {

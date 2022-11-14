@@ -80,8 +80,8 @@ class PromoController extends Controller
     
     
                         return response()->json([
-                            'status' => 'succes', 
-                            'message'=>'insert promo  berhasil'   
+                            'status' => 'success', 
+                            'message'=>'insert promo berhasil'   
                         ],200);
         }
         
@@ -117,7 +117,7 @@ class PromoController extends Controller
             
         }
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get promo berhasil',
             'data' => $value  
         ],200);
@@ -128,7 +128,7 @@ class PromoController extends Controller
         $this->dbPrommo = $this->database->getReference('MELCOSH/Promo/-'.$request->get('id_promo'));
         $value = $this->dbPrommo->getSnapshot()->getvalue();
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get detail promo berhasil',
             'data' => $value  
         ],200);
@@ -143,15 +143,15 @@ class PromoController extends Controller
             $tmpValue[$key]['id'] = $key;
           
             array_push($value,$tmpValue[$key]);
-            if ($tmpValue[$key]['kode_promo'] == $request->get('kode_promo') ) {
+            if ($tmpValue[$key]['minmal'] == $request->get('total') ) {
                 return response()->json([
-                    'status' => 'succes', 
-                    'message'=>' kode promo ditemukan'   
+                    'status' => 'success', 
+                    'message'=>'kode bisa digunakan'   
                 ],200);
             }else {
                 return response()->json([
                     'status' => 'failed', 
-                    'message'=>' kode promo tidak ditemukan'   
+                    'message'=>'tidak memenuhi syarat minimal'   
                 ],500);
             }
         }

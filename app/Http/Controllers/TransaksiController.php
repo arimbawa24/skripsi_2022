@@ -40,38 +40,75 @@ class TransaksiController extends Controller
         $this->db = $this->database->getReference('MELCOSH/Transaksi/'.$uid);
         $tmpValue = $this->db->getValue();
         $value = array();
+        
         foreach (array_keys($tmpValue) as $key) {
+            $jumlah = $tmpValue[$key]['jumlah'];
             if(strtotime(date('l, d-m-Y')) > strtotime($tmpValue[$key]['exp_date']) && $tmpValue[$key]['status'] == 'proses' ){
                 
                 $db = $this->database->getReference('MELCOSH/Transaksi/'.$uid.'/'.$key)->UPDATE([
                             
                     'status' => 'expired',
-                    
-                ]);
-                    
+                ]);      
             }
-        }
+            // foreach ( $tmpValue[$key]['id_produk']as $keyID ) {
+            //     $this->dbMakanan = $this->database->getReference('MELCOSH/MAKANAN/'.$id_produk);
+            //     $valuemakanan = $this->dbMakanan->getSnapshot()->getvalue();
+                
+            //     if ($valuemakanan == NULL) {
+            //         $this->dbMinuman = $this->database->getReference('MELCOSH/MINUMAN/'.$id_produk);
+            //         $valueMinuman = $this->dbMinuman->getSnapshot()->getvalue();
+            //         if ($valueMinuman == NULL) {
+            //             $this->dbMerch = $this->database->getReference('MELCOSH/MERCHANDISE/'.$id_produk);
+            //             $valueMecrh = $this->dbMerch->getSnapshot()->getvalue();
+            //             if ($valueMecrh == NULL) {
+            //                 $this->dbWB = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk);
+            //                 $valuewb = $this->dbWB->getSnapshot()->getvalue();
+            //              }else {
+            //                 $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
+                            
+            //                     'Jumlah_stok' => $valuewb['Jumlah_stok']-1
+                                
+            //                 ]);
+            //                  }
+            //             }else {
+            //                 # code...
+            //             }
+
+            //         }else { 
+            //         $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
+                            
+            //             'Jumlah_stok' => $valuemakanan['Jumlah_stok']+$jumlah
+                        
+            //         ]);
+            //     }   
+               
+
+            // }
+        }  
+        
+         
         $this->db = $this->database->getReference('MELCOSH/Transaksi/'.$uid);
         $tmpValue = $this->db->getValue();
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get data transaksi user berhasil',
             'data' => $tmpValue
         ],200);
       
     } catch (FailedToVerifyToken $e) {
         return 'The token is invalid: '.$e->getMessage();
-    }
-    }
+     }
+}
+        
 
     public function GetKodeTransaksi(Request $request){
         $kode_bayar = $request->get('kode_bayar');
-        try {
-            if(empty($request->bearerToken())){
-                return "Beare token harus ada";
-            }
-            $verifiedIdToken = $this->auth->verifyIdToken($request->bearerToken());
-            $uid = $verifiedIdToken->claims()->get('sub');
+    //     try {
+    //         if(empty($request->bearerToken())){
+    //             return "Beare token harus ada";
+    //         }
+            // $verifiedIdToken = $this->auth->verifyIdToken($request->bearerToken());
+            // $uid = $verifiedIdToken->claims()->get('sub');
        
         $this->db = $this->database->getReference('MELCOSH/Transaksi/');
         $tmpValue = $this->db->getValue();
@@ -94,8 +131,8 @@ class TransaksiController extends Controller
             $data_transaksi = $tmpValue;
 
            }
-        }
 
+        }
 
         $value = array();
         foreach (array_keys($tmpValue) as $key) {
@@ -111,9 +148,9 @@ class TransaksiController extends Controller
                 'message'=>'get data kode bayar berhasil',
                 'kode_transaksi' => $tmpValue[$key]['kode_bayar']     
             ],200);
-        } catch (FailedToVerifyToken $e) {
-            return 'The token is invalid: '.$e->getMessage();
-        }
+        // } catch (FailedToVerifyToken $e) {
+        //     return 'The token is invalid: '.$e->getMessage();
+        // }
         }
 
         public function bayar(Request $request){

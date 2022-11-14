@@ -47,7 +47,7 @@ class MinumanController extends Controller
                  }
                  if ($tmpValue[$key]['nama_minuman'] == $request->get('nama_minuman')) {
                     return response()->json([
-                        'status' => 'false', 
+                        'status' => 'failed', 
                         'message'=> 'produk yang diinputkan sudah ada'   
                     ],400);
                     
@@ -87,7 +87,7 @@ class MinumanController extends Controller
     
     
                         return response()->json([
-                            'status' => 'succes', 
+                            'status' => 'success', 
                             'message'=>'insert Minuman berhasil'   
                         ],200);
         }
@@ -110,7 +110,7 @@ class MinumanController extends Controller
             }  
         }
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get data minuman berhasil',
             'data'=>$value 
         ],200);
@@ -122,7 +122,7 @@ class MinumanController extends Controller
         $this->dbMinuman = $this->database->getReference('MELCOSH/MINUMAN/'.$request->get('id_produk'));
         $value = $this->dbMinuman->getSnapshot()->getvalue();
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get detail minuman berhasil',
             'data'=>$value 
         ],200);

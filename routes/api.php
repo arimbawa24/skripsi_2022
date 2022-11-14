@@ -49,7 +49,7 @@ Route::prefix('produk')->group(function () {
     Route::POST('/merchandise/insert', [MerchandiseController::class,'InsertMerch']); 
     Route::GET('/merchandise/get', [MerchandiseController::class,'GetMerch']); 
     Route::GET('/merchandise/detail/get', [MerchandiseController::class,'GetDetailMerch']); 
-    Route::PUT('/produk/stok/update', [MakananController::class,'updateProduk']); 
+    Route::PUT('/stok/update', [MakananController::class,'updateProduk']); 
 });
 
 Route::prefix('promo')->group(function () {

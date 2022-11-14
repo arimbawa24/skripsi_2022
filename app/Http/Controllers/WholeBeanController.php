@@ -37,7 +37,7 @@ class WholeBeanController extends Controller
         if ($validator->fails()) {
             return response()->json(["success" => false, "message" => $validator->errors()], 400);
         }else {
-            $this->dbWB = $this->database->getReference('MELCOSH/WholeBean');
+            $this->dbWB = $this->database->getReference('MELCOSH/WHOLEBEAN');
             $tmpValue = $this->dbWB->getValue();
             $value = array();
             if(isset($tmpValue)){
@@ -47,7 +47,7 @@ class WholeBeanController extends Controller
                  }
                  if ($tmpValue[$key]['nama_wb'] == $request->get('nama_wb')) {
                     return response()->json([
-                        'status' => 'false', 
+                        'status' => 'failed', 
                         'message'=> 'produk yang diinputkan sudah ada'   
                     ],400);
                     
@@ -55,7 +55,7 @@ class WholeBeanController extends Controller
             }
             
         $dbWB = $this->database->getReference('MELCOSH/WHOLEBEAN')->push([
-            'nama_wb' => $request->get('nama_wb'),
+            'nama_wb' => $request->get('nama_wholeb'),
             'harga' => $request->get('harga'),
             'deskripsi' => $request->get('deskripsi'),
             'Jumlah_stok' => $request->get('Jumlah_stok'),
@@ -87,7 +87,7 @@ class WholeBeanController extends Controller
     
     
                         return response()->json([
-                            'status' => 'succes', 
+                            'status' => 'success', 
                             'message'=>'insert Wholebean berhasil'   
                         ],200);
         }
@@ -107,7 +107,7 @@ class WholeBeanController extends Controller
             }  
         }
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get data wholebean berhasil',
             'data' => $value   
         ],200);
@@ -119,7 +119,7 @@ class WholeBeanController extends Controller
         $this->dbWB = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$request->get('id_produk'));
         $value = $this->dbWB->getSnapshot()->getvalue();
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get detail wholebean berhasil',
             'data' => $value   
         ],200);

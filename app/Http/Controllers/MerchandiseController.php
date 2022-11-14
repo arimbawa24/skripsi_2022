@@ -48,7 +48,7 @@ class MerchandiseController extends Controller
                  }
                  if ($tmpValue[$key]['nama_merch'] == $request->get('nama_merch')) {
                     return response()->json([
-                        'status' => 'false', 
+                        'status' => 'failed', 
                         'message'=> 'produk yang diinputkan sudah ada'   
                     ],400);
                     
@@ -88,7 +88,7 @@ class MerchandiseController extends Controller
     
     
                         return response()->json([
-                            'status' => 'succes', 
+                            'status' => 'success', 
                             'message'=>'insert Merchandise berhasil'   
                         ],200);
         }
@@ -109,22 +109,20 @@ class MerchandiseController extends Controller
             }  
         }
         return response()->json([
-            'status' => 'succes', 
-            'message'=>' get data merchandise berhasil',
+            'status' => 'success', 
+            'message'=>'get data merchandise berhasil',
             'data' =>   $value  
         ],200);
         
        
     }
-       
     
-
     public function GetDetailMerch(Request $request){
         $this->dbMerch = $this->database->getReference('MELCOSH/MERCHANDISE/'.$request->get('id_produk'));
         $value = $this->dbMerch->getSnapshot()->getvalue();
         return response()->json([
-            'status' => 'succes', 
-            'message'=>' get detail merchandise berhasil',
+            'status' => 'success', 
+            'message'=>'get detail merchandise berhasil',
             'data' =>   $value  
         ],200);
     }
