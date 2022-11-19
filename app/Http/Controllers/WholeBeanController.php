@@ -32,7 +32,7 @@ class WholeBeanController extends Controller
             'harga' => 'required',
             'deskripsi' => 'required|string|min:5|max:100',
             'image' => 'required|mimes:jpg,png|max:1024|min:10',
-            'Jumlah' =>'required|numeric'
+            
         ]);
         if ($validator->fails()) {
             return response()->json(["success" => false, "message" => $validator->errors()], 400);
@@ -55,7 +55,7 @@ class WholeBeanController extends Controller
             }
             
         $dbWB = $this->database->getReference('MELCOSH/WHOLEBEAN')->push([
-            'nama_wb' => $request->get('nama_wholeb'),
+            'nama_wb' => $request->get('nama_wb'),
             'harga' => $request->get('harga'),
             'deskripsi' => $request->get('deskripsi'),
             'Jumlah_stok' => $request->get('Jumlah_stok'),

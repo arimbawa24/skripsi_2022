@@ -50,7 +50,7 @@ class PromoController extends Controller
             'deskripsi' => $request->get('deskripsi'),
             'potongan' => $request->get('potongan'),
             'minimal' => $request->get('minimal'),
-            'exp_date' => date($request->get('exp_date')),
+            'exp_date' => $request->get('exp_date'),
             'is_active' => 'Y',
             'point' => $request->get('point'),
         ]); 
@@ -87,7 +87,7 @@ class PromoController extends Controller
         
     
 
-    public function GetPromo(){
+    public function GetPromo(Request $request){
         $this->dbPrommo = $this->database->getReference('MELCOSH/Promo');
         $tmpValue = $this->dbPrommo->getValue();
         // return $tmpValue;
@@ -96,7 +96,7 @@ class PromoController extends Controller
   
             if(strtotime(date('d-m-Y')) > strtotime($tmpValue[$key]['exp_date']) ){
 
-                $db = $this->database->getReference('MELCOSH/Transaksi/'.$id_user.'/'.$key)->UPDATE([
+                $db = $this->database->getReference('MELCOSH/Promo/'.$key)->UPDATE([
                             
                     'is_active' => 'N',
                     
@@ -108,12 +108,15 @@ class PromoController extends Controller
         $tmpValue = $this->dbPrommo->getValue();
         $value = array();
         foreach (array_keys($tmpValue) as $key) {
-            $tmpValue[$key]['id'] = $key;
+            if ($tmpValue[$key]['is_active'] == 'Y'  &&$request->get('total') >= $tmpValue[$key]['minimal'] ) {
+                $tmpValue[$key]['id'] = $key;
             unset($tmpValue[$key]['deskripsi']);
             unset($tmpValue[$key]['minimal']);
             unset($tmpValue[$key]['exp_date']);
             unset($tmpValue[$key]['is_active']);
             array_push($value,$tmpValue[$key]);
+            }
+            
             
         }
         return response()->json([
@@ -125,7 +128,7 @@ class PromoController extends Controller
     }
 
     public function GetDetailPromo(Request $request){
-        $this->dbPrommo = $this->database->getReference('MELCOSH/Promo/-'.$request->get('id_promo'));
+        $this->dbPrommo = $this->database->getReference('MELCOSH/Promo/'.$request->get('id_promo'));
         $value = $this->dbPrommo->getSnapshot()->getvalue();
         return response()->json([
             'status' => 'success', 
@@ -135,27 +138,27 @@ class PromoController extends Controller
        
     }
 
-    public function ValidasiPromo(Request $request){
-        $this->dbPrommo = $this->database->getReference('MELCOSH/Promo');
-        $tmpValue = $this->dbPrommo->getValue();
-        $value = array();
-        foreach (array_keys($tmpValue) as $key) {
-            $tmpValue[$key]['id'] = $key;
+    // public function ValidasiPromo(Request $request){
+    //     $this->dbPrommo = $this->database->getReference('MELCOSH/Promo');
+    //     $tmpValue = $this->dbPrommo->getValue();
+    //     $value = array();
+    //     foreach (array_keys($tmpValue) as $key) {
+    //         $tmpValue[$key]['id'] = $key;
           
-            array_push($value,$tmpValue[$key]);
-            if ($tmpValue[$key]['minmal'] == $request->get('total') ) {
-                return response()->json([
-                    'status' => 'success', 
-                    'message'=>'kode bisa digunakan'   
-                ],200);
-            }else {
-                return response()->json([
-                    'status' => 'failed', 
-                    'message'=>'tidak memenuhi syarat minimal'   
-                ],500);
-            }
-        }
+    //         array_push($value,$tmpValue[$key]);
+    //         if ($tmpValue[$key]['minmal'] == $request->get('total')) {
+    //             return response()->json([
+    //                 'status' => 'success', 
+    //                 'message'=>'kode bisa digunakan'   
+    //             ],200);
+    //         }else {
+    //             return response()->json([
+    //                 'status' => 'failed', 
+    //                 'message'=>'tidak memenuhi syarat minimal'   
+    //             ],500);
+    //         }
+    //     }
 
-    }
+    // }
 
 }

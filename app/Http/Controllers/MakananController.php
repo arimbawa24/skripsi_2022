@@ -34,23 +34,28 @@ class MakananController extends Controller
             'deskripsi' => 'required|string|min:5|max:100',
             'image' => 'required|mimes:jpg,png|max:1024|min:10'
         ]);
+       
         if ($validator->fails()) {
             return response()->json(["success" => false, "message" => $validator->errors()], 400);
-        }else {
-            $this->dbMakanan = $this->database->getReference('MELCOSH/MAKANAN');
-            $tmpValue = $this->dbMakanan->getValue();
-            $value = array();
-            foreach (array_keys($tmpValue) as $key) {
-                $tmpValue[$key]['id'] = $key;
-                array_push($value,$tmpValue[$key]);
-             }
-             if ($tmpValue[$key]['nama_makanan'] == $request->get('nama_makanan')) {
-                return response()->json([
-                    'status' => 'failed', 
-                    'message'=> 'produk yang diinputkan sudah ada'   
-                ],400);
-                
-            }
+           
+        }
+
+        $this->dbMakanan = $this->database->getReference('MELCOSH/MAKANAN');
+        $tmpValue = $this->dbMakanan->getValue();
+        $value = array();
+        foreach (array_keys($tmpValue) as $key) {
+            $tmpValue[$key]['id'] = $key;
+            array_push($value,$tmpValue[$key]);
+         }
+         if ($tmpValue[$key]['nama_makanan'] == $request->get('nama_makanan')) {
+            
+            return response()->json([
+                'status' => 'failed', 
+                'message'=> 'produk yang diinputkan sudah ada'   
+            ],400);
+            
+        }
+
             $dbMakanan = $this->database->getReference('MELCOSH/MAKANAN')->push([
                 'nama_makanan' => $request->get('nama_makanan'),
                  'harga' => $request->get('harga'),
@@ -61,7 +66,7 @@ class MakananController extends Controller
                 
             ]);
             $expiresAt = new \DateTime('tomorrow');
-            $image = $request->file('image');  //image file from frontend
+            $image = $request->file('image');  
             $firebase_storage_path = 'Makanan/';
             $idMakanan = $dbMakanan->getKey();
             $localfolder = public_path('firebase-temp-uploads') .'/';
@@ -88,7 +93,7 @@ class MakananController extends Controller
                         'status' => 'success', 
                         'message'=>'insert makanan berhasil'   
                     ],200);
-        }
+        
 
     }
 

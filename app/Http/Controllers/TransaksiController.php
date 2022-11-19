@@ -42,15 +42,20 @@ class TransaksiController extends Controller
         $value = array();
         
         foreach (array_keys($tmpValue) as $key) {
-            $jumlah = $tmpValue[$key]['jumlah'];
+            
             if(strtotime(date('l, d-m-Y')) > strtotime($tmpValue[$key]['exp_date']) && $tmpValue[$key]['status'] == 'proses' ){
                 
-                $db = $this->database->getReference('MELCOSH/Transaksi/'.$uid.'/'.$key)->UPDATE([
-                            
+                $db = $this->database->getReference('MELCOSH/Transaksi/'.$uid.'/'.$key)->UPDATE([        
                     'status' => 'expired',
                 ]);      
+            
             }
-            // foreach ( $tmpValue[$key]['id_produk']as $keyID ) {
+            // dd($tmpValue[$key]['list_produk']);
+            // foreach ( $tmpValue[$key]['list_produk']as $produk ) {
+
+            //   $id_produk = $produk['id_produk'];
+            //   $jumlah = $produk['jumlah'];
+
             //     $this->dbMakanan = $this->database->getReference('MELCOSH/MAKANAN/'.$id_produk);
             //     $valuemakanan = $this->dbMakanan->getSnapshot()->getvalue();
                 
@@ -66,12 +71,17 @@ class TransaksiController extends Controller
             //              }else {
             //                 $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
                             
-            //                     'Jumlah_stok' => $valuewb['Jumlah_stok']-1
+            //                     'Jumlah_stok' => $valuewb['Jumlah_stok'] + $jumlah
                                 
             //                 ]);
             //                  }
             //             }else {
-            //                 # code...
+
+            //                 $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$id_produk)->UPDATE([
+                            
+            //                     'Jumlah_stok' => $valuewb['Jumlah_stok'] + $jumlah
+                                
+            //                 ]);
             //             }
 
             //         }else { 
@@ -103,6 +113,7 @@ class TransaksiController extends Controller
 
     public function GetKodeTransaksi(Request $request){
         $kode_bayar = $request->get('kode_bayar');
+        $uid = $request->get('uid');
     //     try {
     //         if(empty($request->bearerToken())){
     //             return "Beare token harus ada";
@@ -118,35 +129,50 @@ class TransaksiController extends Controller
             foreach (array_keys($tmpValue[$key]) as $key2) {
                 array_push($transaksi,['user_id'=> $key,'transaksi_user'=> $key2,'kode_bayar' => $tmpValue[$key][$key2]['kode_bayar']]);
             }
+        
         }
 
         $data_transaksi = array();
+    
+
         foreach ($transaksi as $trnks) {
            if ($trnks['kode_bayar'] == $kode_bayar) {
-            $this->db = $this->database->getReference('MELCOSH/Transaksi/'.$trnks['user_id'].'/'.$trnks['transaksi_user']);
-            $tmpValue = $this->db->getValue();
-            $tmpValue['user_id']=$trnks['user_id'];
-            $tmpValue['transaksi_user']=$trnks['transaksi_user'];
 
-            $data_transaksi = $tmpValue;
+            $this->db = $this->database->getReference('MELCOSH/Transaksi/'.$trnks['user_id'].'/'.$trnks['transaksi_user']);
+            $tmpValue1 = $this->db->getValue();
+
+            $tmpValue1['user_id']=$trnks['user_id'];
+            $tmpValue1['transaksi_user']=$trnks['transaksi_user'];
+          
+          
+            
+            // foreach ($tmpValue1 as $key ) {
+            //     array_push($tmpValue1,$tmpValue[$key]);
+            // }
 
            }
-
+    
+           
+        //    array_push($data_transaksi,$transaksi[$trnks]);
+           
+       
         }
-
-        $value = array();
-        foreach (array_keys($tmpValue) as $key) {
-            if($tmpValue[$key]['id'] == $uid){
+        // $value = array();
+        // foreach (array_keys($tmpValue) as $key) {
+        //     if($tmpValue[$key] == $uid){
               
-                    $db = $this->database->getReference('MELCOSH/Transaksi/'.$uid);
-                    $data = $this->db->getValue();
-                }
-            }
+        //             $db = $this->database->getReference('MELCOSH/Transaksi/'.$uid);
+        //             $data = $this->db->getValue();
+        //         }
+        //         array_push($value,$tmpValue[$key]);
+        //     }
             
             return response()->json([
-                'status' => 'succes', 
+                'status' => 'success', 
                 'message'=>'get data kode bayar berhasil',
-                'kode_transaksi' => $tmpValue[$key]['kode_bayar']     
+                'kode_transaksi' =>   $tmpValue1['transaksi_user']=$trnks['transaksi_user'],
+                'userId' => $tmpValue1['user_id']=$trnks['user_id'],
+                'data' => $tmpValue1   
             ],200);
         // } catch (FailedToVerifyToken $e) {
         //     return 'The token is invalid: '.$e->getMessage();
@@ -157,18 +183,19 @@ class TransaksiController extends Controller
             $this->db = $this->database->getReference('MELCOSH/Transaksi/'.$request->get('user_id').'/'.$request->get('transaksi_id'))->UPDATE([
                 'status' => 'selesai'
             ]);
-    
+            
+            
             $database = $this->firestore->database();
             $collectionReference = $database->collection('Members');
             $documentReference = $collectionReference->document($request->get('user_id'));
             $snapshot = $documentReference->snapshot();
 
-            $point= $snapshot['point']+ $request->get('point');
+            $point= $snapshot['Point']+ $request->get('point');
 
             $database = $this->firestore->database();
             $collectionReference = $database->collection('Members');
             $documentReference = $collectionReference->document($request->get('user_id'))->update([
-                ['path' => 'point', 'value' => $point ],
+                ['path' => 'Point', 'value' => $point ],
             ]); 
             return response()->json([
                 'status' => 'succes', 

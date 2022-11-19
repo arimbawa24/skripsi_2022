@@ -93,7 +93,7 @@ class KeranjangController extends Controller
                                 };
                                  }
                             } 
-                                $db = $this->database->getReference('MELCOSH/WHOLEBEAN/'.$uid)->PUSH([
+                                $db = $this->database->getReference('MELCOSH/Keranjang/'.$uid)->PUSH([
                                     
                                         'nama_produk' => $valuewb['nama_wb'],
                                         'harga' => $valuewb['harga'],
@@ -109,7 +109,7 @@ class KeranjangController extends Controller
                                 ]);
                                 return response()->json([
                                     'status' => 'success', 
-                                    'message'=>' insert keranjang berhasil'   
+                                    'message'=>'insert keranjang berhasil'   
                                 ],200);
 
                          }else {
@@ -144,7 +144,7 @@ class KeranjangController extends Controller
                                         ]);
                                         return response()->json([
                                             'status' => 'success', 
-                                            'message'=>' insert keranjang berhasil'   
+                                            'message'=>'insert keranjang berhasil'   
                                         ],200);
                                     }
                                 }
@@ -165,7 +165,7 @@ class KeranjangController extends Controller
                             ]);
                             return response()->json([
                                 'status' => 'success', 
-                                'message'=>' insert keranjang berhasil'   
+                                'message'=>'insert keranjang berhasil'   
                             ],200);
                         }
 
@@ -176,7 +176,7 @@ class KeranjangController extends Controller
                     if (isset(  $tmpValue)){
                         foreach (array_keys($tmpValue) as $key) {            
                             if($tmpValue[$key]['nama_produk'] == $valueMinuman['nama_minuman']){
-                                if ($valueMinuman[$key]['Jumlah_stok']=='0') {
+                                if ($valueMinuman['Jumlah_stok']=='0') {
                                     $db = $this->database->getReference('MELCOSH/MINUMAN/'.$id_produk)->UPDATE([
                             
                                         'flag_stok' => 'N'
@@ -201,7 +201,7 @@ class KeranjangController extends Controller
                                 ]);
                                 return response()->json([
                                     'status' => 'success', 
-                                    'message'=>' insert keranjang berhasil'   
+                                    'message'=>'insert keranjang berhasil'   
                                 ],200);
                             }
                         } 
@@ -222,7 +222,7 @@ class KeranjangController extends Controller
                     ]);
                     return response()->json([
                        'status' => 'success', 
-                       'message'=>' insert keranjang berhasil'   
+                       'message'=>'insert keranjang berhasil'   
                    ],200);
                 }                
         }else { 
@@ -262,7 +262,7 @@ class KeranjangController extends Controller
                             
                             return response()->json([
                                 'status' => 'success', 
-                                'message'=>' insert keranjang berhasil'   
+                                'message'=>'insert keranjang berhasil'   
                             ],200);
                         }
                     } 

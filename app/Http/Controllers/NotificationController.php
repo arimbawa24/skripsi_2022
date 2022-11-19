@@ -58,7 +58,7 @@ class NotificationController extends Controller
      Mail::to($dataemail)->send(new sendNotification($mailObj));
 
      return response()->json([
-                    'status' => 'succes', 
+                    'status' => 'success', 
                     'message'=> 'email berhasil dikirim',
                 ],200);
 }

@@ -38,16 +38,13 @@ class AuthController extends Controller
     }
 
     public function registrasi(Request $request){
-        // dd($request);
         $validator = Validator::make($request->all(), [
             'firstname' =>'required|string|min:3|max:8',
             'lastname' => 'required|string|min:4|max:15',
             'email' => 'required|string|email',
             'password' => 'required|string|min:8|max:16',
             'phone' => 'required|numeric|digits_between:11,13',
-            'image' => 'required|mimes:jpg,png|max:1024|min:10'
-            //
-            
+            'image' => 'required|mimes:jpg,png|max:1024|min:10',
             
         ]);
 
@@ -86,7 +83,7 @@ class AuthController extends Controller
                     }
         
                     return response()->json([
-                        'status' => 'succes', 
+                        'status' => 'success', 
                         'message'=>'registrasi berhasil'   
                     ],200);
                 }catch (\Exception $e ) {
@@ -211,7 +208,7 @@ class AuthController extends Controller
             unlink($localfolder . $file);
             }
         return response()->json([
-            'status' => 'succes',
+            'status' => 'success',
             'message'=>'update data berhasil'   
         ],200);
         } catch (FailedToVerifyToken $e) {
@@ -246,7 +243,7 @@ class AuthController extends Controller
         
 
             return response()->json([
-                'status' => 'succes',
+                'status' => 'success',
                 'message'=>'get data berhasil',
                 'data'=> [  'id_user' => $uid,
                             'firstname' => $snapshot['firstname'],
@@ -271,9 +268,15 @@ class AuthController extends Controller
         $token = $request->get('token');
       if (isset($userId)){
             $this->auth->revokeRefreshTokens($userId);
-            return 'logout berhasil';
+            return response()->json([
+                'status' => 'success', 
+                'message'=> 'logout berhasil',
+              ],200);;
         } else {
-           return 'User belum login';
+            return response()->json([
+                'status' => 'failed', 
+                'message'=> 'user belom login',
+              ],400);;
         }
     }
 
