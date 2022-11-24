@@ -27,6 +27,15 @@ class PromoController extends Controller
 
 
     public function InsertPromo(Request $request){
+        $validator = Validator::make($request->all(), [
+            'nama_promo' =>'required|string|min:10|max:20',
+            'kode_promo' => 'required|string|min:10|max:15',
+            'deskripsi' => 'required|string|min:10|max:100',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(["success" => false, "message" =>$validator->errors()], 400);
+        }
+        else{
         $this->dbWB = $this->database->getReference('MELCOSH/WholeBean');
             $tmpValue = $this->dbWB->getValue();
             $value = array();
@@ -83,6 +92,7 @@ class PromoController extends Controller
                             'status' => 'success', 
                             'message'=>'insert promo berhasil'   
                         ],200);
+                    }
         }
         
     

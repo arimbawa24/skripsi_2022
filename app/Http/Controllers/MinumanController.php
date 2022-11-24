@@ -29,9 +29,9 @@ class MinumanController extends Controller
 
     public function InsertMinuman(Request $request){
         $validator = Validator::make($request->all(), [
-            'nama_minuman' =>'required|string|min:5|max:30',
+            'nama_minuman' =>'required|string|min:5|max:20',
             'harga' => 'required',
-            'deskripsi' => 'required|string|min:5|max:100',
+            'deskripsi' => 'required|string|min:10|max:100',
             'image' => 'required|mimes:jpg,png|max:1024|min:10'
         ]);
         if ($validator->fails()) {

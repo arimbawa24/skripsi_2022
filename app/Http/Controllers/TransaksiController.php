@@ -124,7 +124,7 @@ class TransaksiController extends Controller
         $this->db = $this->database->getReference('MELCOSH/Transaksi/');
         $tmpValue = $this->db->getValue();
         $transaksi = array();
-
+        
         foreach (array_keys($tmpValue) as $key) {
             foreach (array_keys($tmpValue[$key]) as $key2) {
                 array_push($transaksi,['user_id'=> $key,'transaksi_user'=> $key2,'kode_bayar' => $tmpValue[$key][$key2]['kode_bayar']]);
@@ -198,7 +198,7 @@ class TransaksiController extends Controller
                 ['path' => 'Point', 'value' => $point ],
             ]); 
             return response()->json([
-                'status' => 'succes', 
+                'status' => 'success', 
                 'message'=>'pembayaran berhasil', 
             ],200);
 
@@ -214,7 +214,7 @@ class TransaksiController extends Controller
             }
         }
         return response()->json([
-            'status' => 'succes', 
+            'status' => 'success', 
             'message'=>'get data history transaksi berhasil',
             'data' =>$transaksi
         ],200);

@@ -28,9 +28,9 @@ class MerchandiseController extends Controller
 
     public function InsertMerch(Request $request){
         $validator = Validator::make($request->all(), [
-            'nama_merch' =>'required|string|min:5|max:30',
+            'nama_merch' =>'required|string|min:5|max:20',
             'harga' => 'required',
-            'deskripsi' => 'required|string|min:5|max:100',
+            'deskripsi' => 'required|string|min:10|max:100',
             'image' => 'required|mimes:jpg,png|max:1024|min:10'
         ]);
 
