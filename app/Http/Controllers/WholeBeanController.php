@@ -111,8 +111,7 @@ class WholeBeanController extends Controller
             'message'=>'get data wholebean berhasil',
             'data' => $value   
         ],200);
-         
-       
+    
     }
 
     public function GetDetailWB(Request $request){

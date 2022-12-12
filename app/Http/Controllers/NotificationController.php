@@ -48,7 +48,6 @@ class NotificationController extends Controller
     }  
     
 
-
     $mailObj = new \stdClass();
             $mailObj->subject = 'PROMO TERBARU';
             $mailObj->text = 'halo member setia Kedai Kopi Melcosh <br> ada promo baru di Kedai Kopi Melcosh. Yaitu '.$request->get('nama_promo').

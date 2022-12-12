@@ -44,7 +44,7 @@ class PromoController extends Controller
                     $tmpValue[$key]['id'] = $key;
                     array_push($value,$tmpValue[$key]);
                  }
-                 if ($tmpValue[$key]['nama_wb'] == $request->get('nama_wb')) {
+                 if ($tmpValue[$key]['nama_promo'] == $request->get('nama_promo')) {
                     return response()->json([
                         'status' => 'false', 
                         'message'=> 'produk yang diinputkan sudah ada'   
@@ -95,8 +95,6 @@ class PromoController extends Controller
                     }
         }
         
-    
-
     public function GetPromo(Request $request){
         $this->dbPrommo = $this->database->getReference('MELCOSH/Promo');
         $tmpValue = $this->dbPrommo->getValue();
@@ -127,7 +125,6 @@ class PromoController extends Controller
             array_push($value,$tmpValue[$key]);
             }
             
-            
         }
         return response()->json([
             'status' => 'success', 
@@ -148,27 +145,5 @@ class PromoController extends Controller
        
     }
 
-    // public function ValidasiPromo(Request $request){
-    //     $this->dbPrommo = $this->database->getReference('MELCOSH/Promo');
-    //     $tmpValue = $this->dbPrommo->getValue();
-    //     $value = array();
-    //     foreach (array_keys($tmpValue) as $key) {
-    //         $tmpValue[$key]['id'] = $key;
-          
-    //         array_push($value,$tmpValue[$key]);
-    //         if ($tmpValue[$key]['minmal'] == $request->get('total')) {
-    //             return response()->json([
-    //                 'status' => 'success', 
-    //                 'message'=>'kode bisa digunakan'   
-    //             ],200);
-    //         }else {
-    //             return response()->json([
-    //                 'status' => 'failed', 
-    //                 'message'=>'tidak memenuhi syarat minimal'   
-    //             ],500);
-    //         }
-    //     }
-
-    // }
 
 }

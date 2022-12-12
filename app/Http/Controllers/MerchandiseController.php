@@ -25,7 +25,6 @@ class MerchandiseController extends Controller
         $this->storage = $factory->createStorage();
     }
 
-
     public function InsertMerch(Request $request){
         $validator = Validator::make($request->all(), [
             'nama_merch' =>'required|string|min:5|max:20',
@@ -86,7 +85,6 @@ class MerchandiseController extends Controller
                     'gambar' => $image
                   ]);
     
-    
                         return response()->json([
                             'status' => 'success', 
                             'message'=>'insert Merchandise berhasil'   
@@ -112,9 +110,7 @@ class MerchandiseController extends Controller
             'status' => 'success', 
             'message'=>'get data merchandise berhasil',
             'data' =>   $value  
-        ],200);
-        
-       
+        ],200);  
     }
     
     public function GetDetailMerch(Request $request){

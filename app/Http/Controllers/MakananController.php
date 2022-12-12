@@ -26,7 +26,6 @@ class MakananController extends Controller
     
     }
 
-
     public function InsertMakanan(Request $request){
         $validator = Validator::make($request->all(), [
             'nama_makanan' =>'required|string|min:5|max:20',
@@ -53,7 +52,6 @@ class MakananController extends Controller
                 'status' => 'failed', 
                 'message'=> 'produk yang diinputkan sudah ada'   
             ],400);
-            
         }
 
             $dbMakanan = $this->database->getReference('MELCOSH/MAKANAN')->push([
@@ -61,9 +59,7 @@ class MakananController extends Controller
                  'harga' => $request->get('harga'),
                  'deskripsi' => $request->get('deskripsi'),
                  'Jumlah_stok' => $request->get('Jumlah_stok'),
-                 'flag_stok' => 'Y'
-                 
-                
+                 'flag_stok' => 'Y' 
             ]);
             $expiresAt = new \DateTime('tomorrow');
             $image = $request->file('image');  
@@ -93,8 +89,6 @@ class MakananController extends Controller
                         'status' => 'success', 
                         'message'=>'insert makanan berhasil'   
                     ],200);
-        
-
     }
 
     public function GetMakanan(){
@@ -110,14 +104,12 @@ class MakananController extends Controller
             unset($tmpValue[$key]['Jumlah_stok']);
             array_push($value,$tmpValue[$key]);   
             }  
-                
          }
          return response()->json([
             'status' => 'success', 
             'message'=> 'get data makanan berhasil',
             'data' => $value
         ],200);
-
     }
 
     public function GetDetailMakanan(Request $request){
@@ -128,7 +120,6 @@ class MakananController extends Controller
             'message'=> 'get detail makanan berhasil',
             'data' => $value
         ],200);
-       
     }
 
     public function updateProduk(Request $request)
@@ -146,17 +137,5 @@ class MakananController extends Controller
             'status' => 'success', 
             'message'=> 'update jumlah stok berhasil'
         ],200);
-
-        // $this->dbMakanan = $this->database->getReference('MELCOSH/MAKANAN');
-        // $tmpValue = $this->dbMakanan->getValue();
-        // $value = array();
-        // foreach (array_keys($tmpValue) as $key) {
-        //     if ($tmpValue[$key]['flag_stok'] == 'Y') {
-        //     array_push($value,$tmpValue[$key]);   
-
-        //     }  
-                
-        //  }
-
     }
 }

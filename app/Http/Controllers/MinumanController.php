@@ -11,7 +11,6 @@ use Kreait\Firebase\Contract\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 
-
 class MinumanController extends Controller
 {
     protected $databsae;
@@ -114,8 +113,6 @@ class MinumanController extends Controller
             'message'=>'get data minuman berhasil',
             'data'=>$value 
         ],200);
-      
-       
     }
 
     public function GetDetailMinuman(Request $request){

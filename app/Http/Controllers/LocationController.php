@@ -83,8 +83,6 @@ class LocationController extends Controller
                         ],200);
         }
         
-    
-
     public function GetLocation(){
         $this->dbLocation = $this->database->getReference('MELCOSH/Location');
         $tmpValue = $this->dbLocation->getValue();

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -44,8 +43,7 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string|min:8|max:16',
             'phone' => 'required|numeric|digits_between:11,13',
-            'image' => 'required|mimes:jpg,png|max:1024|min:10',
-            
+            'image' => 'required|mimes:jpg,png|max:1024|min:10',  
         ]);
 
         if ($validator->fails()) {
@@ -67,11 +65,9 @@ class AuthController extends Controller
                     'Point' => '0',
                     'dt_added' => date('l, d-m-Y'),
                     'dt_update' => date('l, d-m-Y'),
-                    
                 ]);
                     $image = $request->file('image'); //image file from frontend
                     $firebase_storage_path = 'Members/';
-                   
                     $localfolder = public_path('firebase-temp-uploads') .'/';
                     $extension = $image->getClientOriginalExtension();
                     $file      = $uid. '.' . $extension;
@@ -81,7 +77,6 @@ class AuthController extends Controller
                     //will remove from local laravel folder
                     unlink($localfolder . $file);
                     }
-        
                     return response()->json([
                         'status' => 'success', 
                         'message'=>'registrasi berhasil'   
@@ -94,28 +89,22 @@ class AuthController extends Controller
                     ],400);
                 }   
         }
-    
-          
     }
 
     public function login(Request $request){
-
         $validator = Validator::make($request->all(), [
                 // 'firtsname' =>'required',
                 'email' => 'required|string|email',
                 'password' => 'required|string|min:6',
                 // 'phone' => 'required|numeric|max:13',
-        ]);
-        
+        ]); 
 
         if ($validator->fails()) {
             return response()->json(["success" => false, "message" => $validator->errors()], 400);
-        }
-        else{
-            
+         }
+            else{
             try {
                 $signInResult = $this->auth->signInWithEmailAndPassword($request->get('email'),$request->get('password'));
-
                 $database = $this->firestore->database();
                 $collectionReference = $database->collection('Members');
                 $documentReference = $collectionReference->document($signInResult->firebaseUserId());
@@ -124,34 +113,27 @@ class AuthController extends Controller
                 Session::put('firebaseUserId', $signInResult->firebaseUserId());
                 Session::put('idToken', $signInResult->idToken());
                 Session::save();
-
                 $role = $snapshot['role'];
 
-
-            
                 return response()->json([
                     'success' => true,
                     'message' => 'LOGIN BERHASIL',
                     'userId' => Session::get('firebaseUserId'),
                     'role' => $role,
                     'token'=> $signInResult->asTokenResponse()
-                    
                 ], 200);
             } catch (\Kreait\Firebase\Auth\SignIn\FailedToSignIn $e) {
-
                 switch ($e->getMessage()){
                     case 'INVALID_PASSWORD':
                         return response()->json([
                             'success' => false,
                             'message' => 'Password anda salah',
-
                         ], 401);
                         break;
                         case 'EMAIL_NOT_FOUND':
                             return response()->json([
                                 'success' => false,
-                                'message' =>'Email anda salah',
-                                
+                                'message' =>'Email anda salah',   
                             ], 401);
                             break;
                     default;
@@ -160,9 +142,7 @@ class AuthController extends Controller
                         'message' => $e->getMessage(),
                         
                     ], 401);
-                }
-              
-               
+                }  
             }catch(Ecxeption $u){
                 return response()->json([
                     'success' => false,
@@ -184,33 +164,41 @@ class AuthController extends Controller
             $verifiedIdToken = $this->auth->verifyIdToken($request->bearerToken());
             $uid = $verifiedIdToken->claims()->get('sub');
 
-        $database = $this->firestore->database();
-        $collectionReference = $database->collection('Members');
-        $documentReference = $collectionReference->document($uid)->update([
-            ['path' => 'firstname', 'value' =>  $request->get('firstname')],
-            ['path' => 'lastname', 'value' =>  $request->get('lastname')],
-            ['path' => 'birtday', 'value' =>  $request->get('birtday')],
-            ['path' => 'phone', 'value' =>  $request->get('phone')],
-            ['path' => 'dt_update', 'value' => date('l, d-m-Y')]
-        ]); 
-        $gambar= $this->storage->getBucket()->object('Members/'.$uid.'.png')->delete();
-
-        $image = $request->file('image'); //image file from frontend  
-        $firebase_storage_path = 'Members/';
-        $localfolder = public_path('firebase-temp-uploads') .'/';
-        $extension = $image->getClientOriginalExtension();
-
-        $file = $uid. '.' . $extension;
-        if ($image->move($localfolder, $file)) {
-            $uploadedfile = fopen($localfolder.$file, 'r');
-            $gambar= $this->storage->getBucket()->upload($uploadedfile, ['name' => $firebase_storage_path . $file]);
-            //will remove from local laravel folder
-            unlink($localfolder . $file);
+            $database = $this->firestore->database();
+            $collectionReference = $database->collection('Members');
+            $documentReference = $collectionReference->document($uid)->update([
+                ['path' => 'firstname', 'value' =>  $request->get('firstname')],
+                ['path' => 'lastname', 'value' =>  $request->get('lastname')],
+                ['path' => 'birtday', 'value' =>  $request->get('birtday')],
+                ['path' => 'phone', 'value' =>  $request->get('phone')],
+                ['path' => 'dt_update', 'value' => date('l, d-m-Y')]
+            ]); 
+       
+            $imageReference =  $this->storage->getBucket()->object('Members/'.$uid.'.png');
+            if ($imageReference->exists()) { 
+                $imageReference =  $this->storage->getBucket()->object('Members/'.$uid.'.png')->delete();
+            }else {
+                $imageReference =  $this->storage->getBucket()->object('Members/'.$uid.'.jpg')->delete();
             }
-        return response()->json([
-            'status' => 'success',
-            'message'=>'update data berhasil'   
-        ],200);
+
+
+            $image = $request->file('image'); //image file from frontend  
+            $firebase_storage_path = 'Members/';
+            $localfolder = public_path('firebase-temp-uploads') .'/';
+            $extension = $image->getClientOriginalExtension();
+
+            $file = $uid. '.' . $extension;
+
+            if ($image->move($localfolder, $file)) {
+                $uploadedfile = fopen($localfolder.$file, 'r');
+                $gambar= $this->storage->getBucket()->upload($uploadedfile, ['name' => $firebase_storage_path . $file]);
+                //will remove from local laravel folder
+                unlink($localfolder . $file);
+                }
+                return response()->json([
+                    'status' => 'success',
+                    'message'=>'update data berhasil'   
+                ],200);
         } catch (FailedToVerifyToken $e) {
             return 'The token is invalid: '.$e->getMessage();
         } 
@@ -225,13 +213,10 @@ class AuthController extends Controller
             $uid = $verifiedIdToken->claims()->get('sub');
 
             $database = $this->firestore->database();
-
             $collectionReference = $database->collection('Members');
             $documentReference = $collectionReference->document($uid);
             $snapshot = $documentReference->snapshot();
 
-            // $extension = $uid->getClientOriginalExtension();
-            // $file      = $uid. '.' . $extension;
             $expiresAt = new \DateTime('tomorrow');
             $imageReference =  $this->storage->getBucket()->object('Members/'.$uid.'.png');
             if ($imageReference->exists()) { 
@@ -241,7 +226,6 @@ class AuthController extends Controller
                 $image = $imageReference->signedUrl($expiresAt);
             }
         
-
             return response()->json([
                 'status' => 'success',
                 'message'=>'get data berhasil',
@@ -252,14 +236,15 @@ class AuthController extends Controller
                             'phone' => $snapshot['phone'],
                             'email' => $snapshot['email'],
                             'image' =>$image,
-                            'dt_added '  =>$snapshot['dt_added']
+                            'role' =>$snapshot['role'],
+                            'point' =>$snapshot['Point'],
+                            'dt_added ' =>$snapshot['dt_added'],
+                            'dt_update' =>$snapshot['dt_update']
                         ]
-                
             ],200);
         } catch (FailedToVerifyToken $e) {
             return 'The token is invalid: '.$e->getMessage();
         }
-
     }
 
     public function Logout(Request $request)
@@ -281,7 +266,6 @@ class AuthController extends Controller
     }
 
     public function changePassword (Request $request){
-
         $validator = Validator::make($request->all(), [
             'password1' => 'required|string|min:8',
 
@@ -289,7 +273,6 @@ class AuthController extends Controller
 
         $password1=$request->get('password1');
         $password2=$request->get('password2');
-        
 
         try {
             if(empty($request->bearerToken())){
